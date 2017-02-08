@@ -1,0 +1,12 @@
+{
+  "name": "ClickPalette",
+  "version": "0.1.0",
+  "description": "A simple, clean palette tool",
+  "main": "main.js",
+  "productName": "ClickPalette",
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "author": "Jam3sn",
+  "license": "This work is licensed under a Creative Commons Attribution-NoDerivatives 4.0 International License"
+}
