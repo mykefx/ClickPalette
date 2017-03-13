@@ -4,12 +4,14 @@ const Configstore = require('configstore');
 const pkg = require(__dirname + '/init.json');
 const conf = new Configstore(pkg.name);
 const {clipboard} = require('electron');
+const {shell} = require('electron');
+const dialog = require('electron').remote.dialog
 var remote = require('electron').remote;
 
 //Globals
 var palettes;
 var total_palettes = 0;
-var version = '0.1.1';
+var version = parseFloat('1.1.0');
 
 console.log('loaded');
 
@@ -276,16 +278,30 @@ function add_sample_input(){
 }
 
 //Check for updates
-function checkForUpdates(version){
+function checkForUpdates(version, showCurrent = false){
 	$.ajax({
-		url: 'http://clickpalette.com/api?current_version=true',
+		url: 'https://api.github.com/repos/jam3sn/ClickPalette/releases',
 		method: 'GET',
 		success: function(data){
-			if (data > version) {
-				dialog.showMessageBox({'title':'An update is avalible!', 'message':'Version '+data+' is avalible to download.'});
-			} else {
-				dialog.showMessageBox({'title':'No Updates', 'message':'You\'re already running the latest version!'});
-			}
+			if (parseFloat(data[0].tag_name) > version) {
+				dialog.showMessageBox({
+                    'type':'info',
+                    'buttons': ['Cancel', 'Update'],
+                    'title':'A ClickPalette update is avalible!',
+                    'message':'Version '+data[0].tag_name+' is avalible to download.'
+                }, function(response){
+                    if (response == 1){
+                        shell.openExternal(data[0].html_url);
+                    }
+                });
+			} else if (showCurrent == true){
+				dialog.showMessageBox({
+                    'type':'info',
+                    'buttons': ['Ok'],
+                    'title':'No Updates',
+                    'message':'You\'re already running the latest version!'
+                });
+            }
 		}
 	});
 }
