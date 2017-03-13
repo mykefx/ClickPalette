@@ -8,5 +8,6 @@
     "start": "electron main.js"
   },
   "author": "Jam3sn",
-  "license": "This work is licensed under a Creative Commons Attribution-NoDerivatives 4.0 International License"
+  "license": "This work is licensed under a Creative Commons Attribution-NoDerivatives 4.0 International License",
+  "devDependencies": {}
 }

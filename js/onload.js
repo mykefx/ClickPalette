@@ -4,20 +4,26 @@ const Configstore = require('configstore');
 const pkg = require(__dirname + '/init.json');
 const conf = new Configstore(pkg.name);
 const {clipboard} = require('electron');
-const {dialog} = require('electron');
-
 var remote = require('electron').remote;
+
+//Globals
 var palettes;
 var total_palettes = 0;
-var version = 1.0;
+var version = '0.1.1';
+
+console.log('loaded');
 
 /* ========================== READY ========================= =*/
 $(document).ready(function(){
 
-	//Check version
-	checkForUpdates(version);
+    //Check version
+    checkForUpdates(version);
 
-	//Get the palettes
+    $('body').click(function(e){
+        console.log('click', e);
+    });
+
+    //conf.set({'palettes' : ''});
     if (conf.get('palettes')){
         palettes = conf.get('palettes');
         console.log(palettes);
@@ -86,11 +92,11 @@ $(document).ready(function(){
     $('.toggle_menu').click(function() {
         var win = remote.getCurrentWindow();
         if ($(this).hasClass('active')){
-            win.setSize(400, 90);
+            win.setSize(400, 129);
             $(this).removeClass('active');
         } else {
             build_palette_list();
-            win.setSize(400,331);
+            win.setSize(400,370);
             $(this).addClass('active');
         }
     });
@@ -100,11 +106,11 @@ $(document).ready(function(){
         $('.toggle_menu').removeClass('active');
         var win = remote.getCurrentWindow();
         if ($(this).hasClass('active')){
-            win.setSize(400, 90);
+            win.setSize(400, 129);
             $(this).html('remove_circle_outline').removeClass('active').parent().parent().parent().removeClass('active');
         } else {
             build_palette_list();
-            win.setSize(300, 50);
+            win.setSize(300, 87);
             $(this).html('remove_circle').addClass('active').parent().parent().parent().addClass('active');
         }
     });
@@ -145,12 +151,10 @@ $(document).ready(function(){
 
 });
 
-
 //Save palettes to configstore
 function save_palettes(){
     conf.set({'palettes' : palettes});
 }
-
 
 //Save current palette
 function save_current(){
@@ -185,7 +189,6 @@ function save_current(){
     }
 }
 
-
 //Calculate and set palette sample sizes
 function set_sample_size(){
     var palette_samples = 0;
@@ -197,7 +200,6 @@ function set_sample_size(){
         $(this).css('width', palette_sample_width + '%');
     });
 }
-
 
 //Set current palette
 function set_palette(palette){
@@ -211,7 +213,6 @@ function set_palette(palette){
     save_palettes();
     set_sample_size();
 }
-
 
 //Set palette list (menu)
 function build_palette_list(){
@@ -227,7 +228,6 @@ function build_palette_list(){
     }
 }
 
-
 //Reset current palette
 function reset_current(){
     $('.palette_container .palette .palette_sample').remove();
@@ -239,7 +239,6 @@ function reset_current(){
         }
     }
 }
-
 
 //Add sample UI
 function add_sample_input(){
@@ -276,7 +275,6 @@ function add_sample_input(){
     }
 }
 
-
 //Check for updates
 function checkForUpdates(version){
 	$.ajax({
@@ -286,7 +284,7 @@ function checkForUpdates(version){
 			if (data > version) {
 				dialog.showMessageBox({'title':'An update is avalible!', 'message':'Version '+data+' is avalible to download.'});
 			} else {
-				dialog.showMessageBox('title':'No Updates', 'message':'You\'re already running the latest version!'});
+				dialog.showMessageBox({'title':'No Updates', 'message':'You\'re already running the latest version!'});
 			}
 		}
 	});

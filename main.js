@@ -26,17 +26,15 @@ function createWindow(){
         x: bounds.x,
         y: bounds.y,
         width: 400,
-        height: 90,
+        height: 129,
         //'titleBarStyle': 'hidden',
         title: 'ClickPalette',
-        backgroundColor: '#fff',
-        frame: false
+        backgroundColor: '#fff'
     });
 
     mainWindow.setResizable(false);
     mainWindow.setAlwaysOnTop(true);
     mainWindow.loadURL('file://' + __dirname + '/index.html');
-    mainWindow.setMenu(null);
 
     //mainWindow.webContents.openDevTools();
 
@@ -50,58 +48,7 @@ function createWindow(){
         mainWindow = null;
     });
 
-    const template = [
-        {
-            label: 'Edit',
-            submenu: [
-                {
-                    role: 'copy'
-                },
-                {
-                    role: 'paste'
-                },
-            ]
-        },
-        {
-            role: 'help',
-            submenu: [
-                {
-                    label: 'Learn More',
-                    click() { require('electron').shell.openExternal('http://jam3sn.xyz/clickpalette'); }
-                },
-                {
-                    label: 'Toggle Developer Tools',
-                    accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-                    click(item, focusedWindow) {
-                      if (focusedWindow)
-                        focusedWindow.webContents.toggleDevTools();
-                    }
-                 },
-            ]
-        },
-    ];
-
-    if (process.platform === 'darwin') {
-        template.unshift({
-            label: 'ClickPalette',
-            submenu: [
-                {
-                    role: 'hide'
-                },
-                {
-                    role: 'unhide'
-                },
-                {
-                    type: 'separator'
-                },
-                {
-                    role: 'quit'
-                },
-            ]
-        });
-    }
-    const menu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(menu);
+    mainWindow.setMenu(null);
 
 };
 
