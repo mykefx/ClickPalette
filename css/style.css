@@ -6,7 +6,16 @@
   font-weight: 400;
   src: local('Material Icons'),
        local('MaterialIcons-Regular'),
-       url(../resources/MaterialIcons-Regular.ttf) format('truetype');
+       url('../resources/MaterialIcons-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'texgyreherosregular';
+    src: url('../resources/texgyreheros-regular-webfont.woff2') format('woff2'),
+         url('../resources/texgyreheros-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
 }
 
 .material-icons {
@@ -37,7 +46,7 @@ html, body{
 
 body{
 	background-color: #f1f1f1;
-    font-family: 'Helvetica Neue';
+    font-family: 'texgyreherosregular' !important;
     font-weight: 200;
 }
 
@@ -125,7 +134,7 @@ body{
     background-color: #fff;
     color: #454545;
     font-size: 18px;
-    font-family: 'Helvetica Neue';
+    font-family: 'texgyreherosregular';
     font-weight: 200;
     box-sizing: border-box;
     outline: none;
@@ -181,7 +190,7 @@ body{
     background-color: transparent;
     width: auto;
     min-width: 100px;
-    font-family: 'Helvetica Neue';
+    font-family: 'texgyreherosregular';
     font-weight: 200;
     color: #454545;
     height: 15px;
@@ -228,7 +237,7 @@ body{
     margin: 0;
     line-height: 60px;
     float: left;
-    font-family: 'Helvetica Neue';
+    font-family: 'texgyreherosregular';
     font-weight: 200;
     font-size: 15px;
 }

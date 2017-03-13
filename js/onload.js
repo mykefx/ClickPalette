@@ -4,20 +4,28 @@ const Configstore = require('configstore');
 const pkg = require(__dirname + '/init.json');
 const conf = new Configstore(pkg.name);
 const {clipboard} = require('electron');
-const {dialog} = require('electron');
-
+const {shell} = require('electron');
+const dialog = require('electron').remote.dialog
 var remote = require('electron').remote;
+
+//Globals
 var palettes;
 var total_palettes = 0;
-var version = 1.0;
+var version = parseFloat('1.1.0');
+
+console.log('loaded');
 
 /* ========================== READY ========================= =*/
 $(document).ready(function(){
 
-	//Check version
-	checkForUpdates(version);
+    //Check version
+    checkForUpdates(version);
 
-	//Get the palettes
+    $('body').click(function(e){
+        console.log('click', e);
+    });
+
+    //conf.set({'palettes' : ''});
     if (conf.get('palettes')){
         palettes = conf.get('palettes');
         console.log(palettes);
@@ -86,11 +94,11 @@ $(document).ready(function(){
     $('.toggle_menu').click(function() {
         var win = remote.getCurrentWindow();
         if ($(this).hasClass('active')){
-            win.setSize(400, 90);
+            win.setSize(400, 129);
             $(this).removeClass('active');
         } else {
             build_palette_list();
-            win.setSize(400,331);
+            win.setSize(400,370);
             $(this).addClass('active');
         }
     });
@@ -100,11 +108,11 @@ $(document).ready(function(){
         $('.toggle_menu').removeClass('active');
         var win = remote.getCurrentWindow();
         if ($(this).hasClass('active')){
-            win.setSize(400, 90);
+            win.setSize(400, 129);
             $(this).html('remove_circle_outline').removeClass('active').parent().parent().parent().removeClass('active');
         } else {
             build_palette_list();
-            win.setSize(300, 50);
+            win.setSize(300, 87);
             $(this).html('remove_circle').addClass('active').parent().parent().parent().addClass('active');
         }
     });
@@ -145,12 +153,10 @@ $(document).ready(function(){
 
 });
 
-
 //Save palettes to configstore
 function save_palettes(){
     conf.set({'palettes' : palettes});
 }
-
 
 //Save current palette
 function save_current(){
@@ -185,7 +191,6 @@ function save_current(){
     }
 }
 
-
 //Calculate and set palette sample sizes
 function set_sample_size(){
     var palette_samples = 0;
@@ -197,7 +202,6 @@ function set_sample_size(){
         $(this).css('width', palette_sample_width + '%');
     });
 }
-
 
 //Set current palette
 function set_palette(palette){
@@ -211,7 +215,6 @@ function set_palette(palette){
     save_palettes();
     set_sample_size();
 }
-
 
 //Set palette list (menu)
 function build_palette_list(){
@@ -227,7 +230,6 @@ function build_palette_list(){
     }
 }
 
-
 //Reset current palette
 function reset_current(){
     $('.palette_container .palette .palette_sample').remove();
@@ -239,7 +241,6 @@ function reset_current(){
         }
     }
 }
-
 
 //Add sample UI
 function add_sample_input(){
@@ -276,18 +277,31 @@ function add_sample_input(){
     }
 }
 
-
 //Check for updates
-function checkForUpdates(version){
+function checkForUpdates(version, showCurrent = false){
 	$.ajax({
-		url: 'http://clickpalette.com/api?current_version=true',
+		url: 'https://api.github.com/repos/jam3sn/ClickPalette/releases',
 		method: 'GET',
 		success: function(data){
-			if (data > version) {
-				dialog.showMessageBox({'title':'An update is avalible!', 'message':'Version '+data+' is avalible to download.'});
-			} else {
-				dialog.showMessageBox('title':'No Updates', 'message':'You\'re already running the latest version!'});
-			}
+			if (parseFloat(data[0].tag_name) > version) {
+				dialog.showMessageBox({
+                    'type':'info',
+                    'buttons': ['Cancel', 'Update'],
+                    'title':'A ClickPalette update is avalible!',
+                    'message':'Version '+data[0].tag_name+' is avalible to download.'
+                }, function(response){
+                    if (response == 1){
+                        shell.openExternal(data[0].html_url);
+                    }
+                });
+			} else if (showCurrent == true){
+				dialog.showMessageBox({
+                    'type':'info',
+                    'buttons': ['Ok'],
+                    'title':'No Updates',
+                    'message':'You\'re already running the latest version!'
+                });
+            }
 		}
 	});
 }
