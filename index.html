@@ -4,6 +4,7 @@
 		<title>ClickPalette</title>
 		<link rel="stylesheet" type="text/css" href="./css/style.css">
 		<script>window.$ = window.jQuery = require('./js/jquery.min.js');</script>
+		<script src="./js/functions.js"></script>
 		<script src="./js/onload.js"></script>
 		<script src="./js/jqueryui.min.js"></script>
 	</head>
@@ -14,15 +15,12 @@
 				<input placeholder="paste your color and hit enter" />
 			</div>
 
-			<ul class="palette" data-paletteid="">
-				<!--<li class="palette_sample" data_color_val="#F2CE79" style="background-color: #F2CE79"><i class="material-icons delete_sample">close</i></li>-->
-			</ul>
+			<ul class="palette" data-paletteid=""></ul>
 		</div>
 
 		<ul class="nav_bar">
 			<li style="float: left; padding: 2px 3px;"><i class="material-icons resize">remove_circle_outline</i></li>
 			<li style="float: left; padding: 0;"><input class="palette_name hide_icons"  value="Untitled"></li>
-			<!--<li><i class="material-icons toggle_settings">settings</i></li>-->
 			<li><i class="material-icons hide_icons toggle_menu">menu</i></li>
 			<li><i class="material-icons hide_icons edit_samples">delete</i></li>
 			<li><i class="material-icons hide_icons add_sample">add</i></li>
