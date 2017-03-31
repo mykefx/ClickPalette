@@ -10,6 +10,10 @@ const Configstore   = require('configstore');
 const pkg           = require(__dirname + '/init.json');
 const conf          = new Configstore(pkg.name);
 
+
+//RobotJS - Used to pull pixel colour on click
+var robot           = require("robotjs");
+
 //Globals
 var palettes;
 var total_palettes = 0;
@@ -31,14 +35,13 @@ $(document).ready( function(){
     });
 
     //Add color
-    $('.add_sample').click(function(){
-        add_sample_input()
-    });
+    $('.add_sample').click(add_sample_input);
+
+    //Trigger color picker
+    $('.color_picker').click(getColorAtPointer);
 
     //Rename current palette
-    $('.nav_bar .palette_name').change(function(){
-        save_current();
-    });
+    $('.nav_bar .palette_name').change(save_current);
 
     //Delete sample view
     $('.edit_samples').click(function() {
