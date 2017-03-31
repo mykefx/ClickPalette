@@ -3,10 +3,49 @@ function clog(data) {
     console.log(data);
 }
 
+
+//App init
+function init(){
+    //Check version
+    checkForUpdates(version);
+
+    //conf.set({'palettes' : ''});
+    if ( conf.get('palettes') ){
+        palettes = conf.get('palettes');
+        for ( var palette in palettes ){
+            if (palettes[palette].current_palette == true){
+                set_palette(palette);
+                break;
+            }
+        }
+    } else {
+        conf.set({'palettes' : {}});
+        palettes = conf.get('palettes');
+    }
+
+    //Calculate and set palette sample sizes
+    set_sample_size();
+
+    if ($('.palette .palette_sample').length < 1){
+        add_sample_input();
+    }
+
+    //JQueryUI to allow the samples to be dragged around
+    $('.palette').sortable({
+        axis: "x",
+        containment: "parent",
+        update: function(){
+            save_current();
+        }
+    });
+}
+
+
 //Save palettes to configstore
 function save_palettes(){
     conf.set({'palettes' : palettes});
 }
+
 
 //Save current palette
 function save_current(){
@@ -41,6 +80,7 @@ function save_current(){
     }
 }
 
+
 //Calculate and set palette sample sizes
 function set_sample_size(){
     var palette_samples = 0;
@@ -52,6 +92,7 @@ function set_sample_size(){
         $(this).css('width', palette_sample_width + '%');
     });
 }
+
 
 //Set current palette
 function set_palette(palette){

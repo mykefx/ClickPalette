@@ -18,40 +18,10 @@ var version = parseFloat('1.1.0');
 clog('loaded');
 
 /* ========================== READY ========================= =*/
-$(document).ready(function(){
+$(document).ready( function(){
 
-    //Check version
-    checkForUpdates(version);
-
-    //conf.set({'palettes' : ''});
-    if (conf.get('palettes')){
-        palettes = conf.get('palettes');
-        for (var palette in palettes){
-            if (palettes[palette].current_palette == true){
-                set_palette(palette);
-                break;
-            }
-        }
-    } else {
-        conf.set({'palettes' : {}});
-        palettes = conf.get('palettes');
-    }
-
-    //Calculate and set palette sample sizes
-    set_sample_size();
-
-    if ($('.palette .palette_sample').length < 1){
-        add_sample_input();
-    }
-
-    //JQueryUI to allow the samples to be dragged around
-    $('.palette').sortable({
-        axis: "x",
-        containment: "parent",
-        update: function(){
-            save_current();
-        }
-    });
+    //Init app
+    init();
 
     //Copy colour to clipboard
     $('.palette').on('click', '.palette_sample', function(){
@@ -106,11 +76,11 @@ $(document).ready(function(){
         var win = remote.getCurrentWindow();
         if ($(this).hasClass('active')){
             win.setSize(400, 129);
-            $(this).html('remove_circle_outline').removeClass('active').parent().parent().parent().removeClass('active');
+            $(this).html('remove_circle_outline').removeClass('active').parents('body').removeClass('active');
         } else {
             build_palette_list();
             win.setSize(300, 87);
-            $(this).html('remove_circle').addClass('active').parent().parent().parent().addClass('active');
+            $(this).html('remove_circle').addClass('active').parents('body').addClass('active');
         }
     });
 

@@ -36,7 +36,7 @@ function createWindow(){
     mainWindow.setAlwaysOnTop(true);
     mainWindow.loadURL('file://' + __dirname + '/index.html');
 
-    //mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     mainWindow.on('close', function(e) {
         var bounds = mainWindow.getBounds();
