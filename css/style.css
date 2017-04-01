@@ -115,7 +115,7 @@ body{
 
 .new_sample{
     width: 100%;
-    position: absolute;;
+    position: absolute;
     top: 0px;
     bottom: 0px;
     z-index: 10;
@@ -127,18 +127,50 @@ body{
 
 .new_sample input{
     width: 100%;
-    padding: 10px;
+    padding: 10px 29px;
     border: 1px solid #ddd;
     border-radius: 4px;
     outline: none;
     background-color: #fff;
     color: #454545;
     font-size: 18px;
+    line-height: 22px;
     font-family: 'texgyreherosregular';
     font-weight: 200;
     box-sizing: border-box;
     outline: none;
     text-align: center;
+}
+
+.new_sample .color_picker{
+    position: absolute;
+    top: 24px;
+    right: 21px;
+    padding: 0 8px;
+    line-height: 43px;
+    font-size: 18px;
+    cursor: pointer;
+    color: #a9a9bb;
+    border-left: 1px solid #ddd;
+    transition: color 0.25s ease;
+}
+
+.new_sample .color_picker.on{
+    color: #3b8ac9;
+}
+
+.new_sample .color_picker:hover{
+    color: #454545;
+}
+
+.new_sample .sampleDemo{
+    position: absolute;
+    top: 24px;
+    left: 21px;
+    width: 35px;
+    height: 42px;
+    border-right: 1px solid #ddd;
+    border-radius: 4px 0px 0px 4px;
 }
 
 

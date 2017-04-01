@@ -1,6 +1,7 @@
-const electron = require('electron');
-const {app} = electron;
-const {BrowserWindow} = electron;
+const electron          = require('electron');
+const {app}             = electron;
+const {BrowserWindow}   = electron;
+const {ipcMain}         = require('electron');
 
 const Configstore = require('configstore');
 const pkg = require(__dirname + '/init.json');
@@ -67,5 +68,13 @@ app.on('window-all-closed', function () {
 app.on('activate', function (e) {
     if (mainWindow === null) {
         createWindow();
+    }
+});
+
+
+//IPC
+ipcMain.on('asynchronous-message', (event, data) => {
+    if ( data['focus'] != undefined ){
+        mainWindow.focus();
     }
 });

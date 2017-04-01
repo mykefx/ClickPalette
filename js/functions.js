@@ -9,6 +9,9 @@ function init(){
     //Check version
     checkForUpdates(version);
 
+    //Get platform
+    $('body').addClass(process.platform);
+
     //conf.set({'palettes' : ''});
     if ( conf.get('palettes') ){
         palettes = conf.get('palettes');
@@ -135,7 +138,9 @@ function reset_current(){
 
 //Add sample UI
 function add_sample_input(){
+    console.log('add sample');
     $('.new_sample input').removeClass('active');
+
     if ($('.add_sample').hasClass('on')){
         $('.add_sample').removeClass('on').html('add');
         $('.new_sample').fadeOut('150');
@@ -143,14 +148,15 @@ function add_sample_input(){
         $('.add_sample').addClass('on').html('close');
         $('.new_sample').fadeIn('150');
         $('.new_sample input').focus();
+
         $('.new_sample input').keyup(function(e) {
+            var new_color = $(this).val();
+            if (new_color.substring(0,1) != '#' && new_color.substring(0,3) != 'rgb'){ new_color = '#' + new_color; }
+
+            sampleDemo(new_color);
+
             if (e.keyCode == 13 && !$(this).hasClass('active')){
                 $(this).addClass('active');
-                var new_color = $(this).val();
-
-                if (new_color.substring(0,1) != '#' && new_color.substring(0,3) != 'rgb'){
-                    new_color = '#' + new_color;
-                }
 
                 $(this).val('');
                 $('.palette').append('<li class="palette_sample" data_color_val="'+ new_color +'" style="background-color: '+ new_color +'"><i class="material-icons delete_sample">close</i><i class="material-icons copy_icon">content_copy</i></li>');
@@ -195,4 +201,24 @@ function checkForUpdates(version, showCurrent = false){
             }
 		}
 	});
+}
+
+
+//Get the colour at cursor on click
+function getColorAtPointer(){
+    $('.color_picker').addClass('on');
+    $('input[name="colorSample"]').focus();
+
+    $('input[name="colorSample"]').one('blur', function(){
+        $('.color_picker').removeClass('on');
+        var mouse = robot.getMousePos();
+        var color = '#'+robot.getPixelColor(mouse.x, mouse.y);
+        $('input[name="colorSample"]').val(color);
+        sampleDemo(color);
+        ipcRenderer.send('asynchronous-message', {'focus' : true});
+    });
+}
+
+function sampleDemo(new_color){
+    $('.sampleDemo').css('background-color', new_color);
 }
