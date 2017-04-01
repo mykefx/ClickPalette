@@ -9,6 +9,9 @@ function init(){
     //Check version
     checkForUpdates(version);
 
+    //Get platform
+    $('body').addClass(process.platform);
+
     //conf.set({'palettes' : ''});
     if ( conf.get('palettes') ){
         palettes = conf.get('palettes');
@@ -203,13 +206,16 @@ function checkForUpdates(version, showCurrent = false){
 
 //Get the colour at cursor on click
 function getColorAtPointer(){
+    $('.color_picker').addClass('on');
     $('input[name="colorSample"]').focus();
 
     $('input[name="colorSample"]').one('blur', function(){
+        $('.color_picker').removeClass('on');
         var mouse = robot.getMousePos();
         var color = '#'+robot.getPixelColor(mouse.x, mouse.y);
         $('input[name="colorSample"]').val(color);
         sampleDemo(color);
+        ipcRenderer.send('asynchronous-message', {'focus' : true});
     });
 }
 

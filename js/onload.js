@@ -4,6 +4,7 @@ const {clipboard}   = require('electron');
 const {shell}       = require('electron');
 const dialog        = require('electron').remote.dialog
 const remote        = require('electron').remote;
+const {ipcRenderer} = require('electron');
 
 //Configstore
 const Configstore   = require('configstore');

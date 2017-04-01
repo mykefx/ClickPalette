@@ -152,6 +152,11 @@ body{
     cursor: pointer;
     color: #a9a9bb;
     border-left: 1px solid #ddd;
+    transition: color 0.25s ease;
+}
+
+.new_sample .color_picker.on{
+    color: #3b8ac9;
 }
 
 .new_sample .color_picker:hover{
