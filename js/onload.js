@@ -65,11 +65,11 @@ $(document).ready( function(){
     $('.toggle_menu').click(function() {
         var win = remote.getCurrentWindow();
         if ($(this).hasClass('active')){
-            win.setSize(400, 129);
+            win.setSize(400, platformHeight(129));
             $(this).removeClass('active');
         } else {
             build_palette_list();
-            win.setSize(400,370);
+            win.setSize(400,platformHeight(370));
             $(this).addClass('active');
         }
     });
@@ -79,11 +79,11 @@ $(document).ready( function(){
         $('.toggle_menu').removeClass('active');
         var win = remote.getCurrentWindow();
         if ($(this).hasClass('active')){
-            win.setSize(400, 129);
+            win.setSize(400, platformHeight(129));
             $(this).html('remove_circle_outline').removeClass('active').parents('body').removeClass('active');
         } else {
             build_palette_list();
-            win.setSize(300, 87);
+            win.setSize(300, platformHeight(87));
             $(this).html('remove_circle').addClass('active').parents('body').addClass('active');
         }
     });

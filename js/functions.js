@@ -219,6 +219,18 @@ function getColorAtPointer(){
     });
 }
 
+
+//Demo color
 function sampleDemo(new_color){
     $('.sampleDemo').css('background-color', new_color);
+}
+
+
+//Mac doesnt include the native top UI
+function platformHeight(height){
+    if ( process.platform == 'darwin' ){
+        return height - 19;
+    } else {
+        return height;
+    }
 }

@@ -19,7 +19,11 @@ function createWindow(){
     if (sysconf.get('bounds')){
         var bounds = sysconf.get('bounds');
     } else {
-        var bounds = {'x':'', 'y':'', 'width':'400', 'height':'125'}
+        var bounds = {'x':'', 'y':'', 'width':'400', 'height':'129'}
+    }
+
+    if ( process.platform == 'darwin' ){
+        bounds.height = 110;
     }
 
     // Create the browser window.
@@ -27,7 +31,7 @@ function createWindow(){
         x: bounds.x,
         y: bounds.y,
         width: 400,
-        height: 129,
+        height: bounds.height,
         //'titleBarStyle': 'hidden',
         title: 'ClickPalette',
         backgroundColor: '#fff'
