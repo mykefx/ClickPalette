@@ -1,12 +1,25 @@
 {
-  "name": "ClickPalette",
-  "version": "1.1.0",
-  "description": "A simple, clean palette tool",
-  "main": "main.js",
-  "productName": "ClickPalette",
-  "scripts": {
-    "start": "electron main.js"
-  },
-  "author": "James Newman",
-  "license": "This work is licensed under a Creative Commons Attribution-NoDerivatives 4.0 International License"
+    "name": "ClickPalette",
+    "productName": "ClickPalette",
+    "version": "1.1.0",
+    "description": "A simple, clean palette tool",
+    "main": "main.js",
+    "productName": "ClickPalette",
+    "scripts": {
+        "start": "electron main.js",
+        "build": "electron-packager . ClickPalette",
+        "rebuild": "npm rebuild --runtime=electron --target=1.6.2 --disturl=https://atom.io/download/atom-shell --abi=51"
+    },
+    "dependencies":{
+        "configstore": "^2.0.0",
+        "robotjs": "^0.4.7"
+    },
+    "devDependencies": {
+        "electron": "^1.6.2",
+        "electron-packager": "^8.6.0",
+        "electron-rebuild": "^1.5.7"
+    },
+    "repository": "https://github.com/Jam3sn/ClickPalette",
+    "author": "James Newman",
+    "license": "This work is licensed under a Creative Commons Attribution-NoDerivatives 4.0 International License"
 }
