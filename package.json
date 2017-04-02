@@ -15,7 +15,7 @@
         "robotjs": "^0.4.7"
     },
     "devDependencies": {
-        "electron": "^1.6.2",
+        "electron-prebuilt": "^1.4.13",
         "electron-packager": "^8.6.0",
         "electron-rebuild": "^1.5.7"
     },
