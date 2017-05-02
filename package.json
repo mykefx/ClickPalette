@@ -1,6 +1,6 @@
 {
-  "name": "vue-trial",
-  "version": "1.0.0",
+  "name": "ClickPalette",
+  "version": "2.0.0",
   "description": "",
   "main": "./app/main.js",
   "scripts": {
@@ -15,7 +15,7 @@
   },
   "keywords": [],
   "author": "James Newman",
-  "license": "ISC",
+  "license": "",
   "dependencies": {
     "jquery": "^3.2.*",
     "robotjs": "^0.4.*"

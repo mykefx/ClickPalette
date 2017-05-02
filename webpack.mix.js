@@ -11,5 +11,9 @@ const { mix } = require('laravel-mix');
  |
  */
 
+mix.webpackConfig({
+    target: 'node'
+});
+
 mix.js('js/app.js', 'app/js')
    .sass('sass/app.scss', 'app/css');

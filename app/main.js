@@ -1,17 +1,27 @@
+const fs                = require('fs');
+const path              = require('path');
 const electron          = require('electron');
 const {app}             = electron;
 const {BrowserWindow}   = electron;
 const {ipcMain}         = electron;
-const Menu = electron.Menu;
+const Menu              = electron.Menu;
 
 let sysconf = {};
 let mainWindow;
 
-var version = '2.0.0';
+var version = app.getVersion();
 
 function createWindow(){
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
+
+    let sysconf = readFile('sys.json');
+    console.log(sysconf);
+
+    if (sysconf == undefined){
+        writeFile('sys.json');
+        sysconf = {}
+    }
 
     if (sysconf.bounds != undefined){
         var bounds = sysconf.bounds;
@@ -37,8 +47,8 @@ function createWindow(){
     //mainWindow.webContents.openDevTools();
 
     mainWindow.on('close', function(e) {
-        //var bounds = mainWindow.getBounds();
-        //sysconf.set({'bounds' : bounds});
+        sysconf.bounds = mainWindow.getBounds();
+        writeFile('sys.json', sysconf);
     });
 
     // Emitted when the window is closed.
@@ -75,3 +85,37 @@ ipcMain.on('asynchronous-message', (event, data) => {
         mainWindow.focus();
     }
 });
+
+
+//Function
+function readFile(file){
+    file = app.getPath('userData') + '/' + file;
+    fs.readFile(file, 'utf8', function(error, data){
+        if (!error){
+            if (data.length > 0){
+                data = JSON.parse(data);
+            }
+            return data
+        }
+    });
+}
+
+function writeFile(file, obj = ''){
+    file = app.getPath('userData') + '/' + file;
+    console.log(file);
+    obj = JSON.stringify(obj);
+    fs.writeFile(file, obj, 'utf8', function(error){
+        if (!error){
+            return error;
+        }
+
+        return true;
+    });
+}
+
+function checkFile(file){
+    file = app.getPath('userData') + '/' + file;
+    if (fs.existsSync(file)){
+        return true;
+    }
+}
