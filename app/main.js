@@ -54,7 +54,8 @@ function createWindow(){
         height: 129,
         //'titleBarStyle': 'hidden',
         title: 'ClickPalette',
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        frame: false
     });
 
     mainWindow.setResizable(false);
