@@ -31,11 +31,10 @@ let version = app.getVersion();
 
 function createWindow(){
 
-    let sysconf = readFile('sys.json');
-    console.log('CONF: ', sysconf);
-
-    if (sysconf === undefined){
-        //writeFile('sys.json');
+    if (checkFile('sys.json')){
+        let sysconf = readFile('sys.json');
+    } else {
+        writeFile('sys.json');
         sysconf = {};
     }
 
@@ -54,8 +53,7 @@ function createWindow(){
         height: 129,
         //'titleBarStyle': 'hidden',
         title: 'ClickPalette',
-        backgroundColor: '#fff',
-        frame: false
+        backgroundColor: '#fff'
     });
 
     mainWindow.setResizable(false);
@@ -135,7 +133,6 @@ function readFile(file){
 
 function writeFile(file, obj = ''){
     file = app.getPath('userData') + '/' + file;
-    console.log(file);
     obj = JSON.stringify(obj);
 
     fs.writeFile(file, obj, 'utf8', (error) => {
