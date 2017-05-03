@@ -23,6 +23,19 @@ let sysconf = {};
 let mainWindow;
 let version = app.getVersion();
 
+//Check sys.json exists, if not cretes the file.
+if (checkFile('sys.json')){
+    sysconf = readFile('sys.json');
+} else {
+    writeFile('sys.json');
+    sysconf = {};
+}
+
+//Checks if bounds are set, if not creates them.
+if (sysconf.bounds === 'undefined'){
+    console.log('no bounds', sysconf);
+    sysconf.bounds = {'x':'', 'y':'', 'width':'400', 'height':'130'};
+}
 
 
 /*******************************************************************************
@@ -31,50 +44,38 @@ let version = app.getVersion();
 
 function createWindow(){
 
-    if (checkFile('sys.json')){
-        let sysconf = readFile('sys.json');
-    } else {
-        writeFile('sys.json');
-        sysconf = {};
-    }
-
-    var bounds;
-    if (sysconf.bounds !== undefined){
-        bounds = sysconf.bounds;
-    } else {
-        bounds = {'x':'', 'y':'', 'width':'400', 'height':'125'};
-    }
-
-    // Create the browser window.
+    //Create the browser window.
     mainWindow = new BrowserWindow({
-        x: bounds.x,
-        y: bounds.y,
+        x: sysconf.bounds.x,
+        y: sysconf.bounds.y,
         width: 400,
-        height: 129,
+        height: 130,
         //'titleBarStyle': 'hidden',
         title: 'ClickPalette',
         backgroundColor: '#fff'
     });
 
+    //Further config
     mainWindow.setResizable(false);
     mainWindow.setAlwaysOnTop(true);
     mainWindow.loadURL('file://' + __dirname + '/index.html');
 
-    //mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
+    //Save the window bounds on close.
     mainWindow.on('close', function(e) {
         sysconf.bounds = mainWindow.getBounds();
         console.log(sysconf.bounds);
         writeFile('sys.json', sysconf);
     });
 
-    // Emitted when the window is closed.
+    //Emitted when the window is closed.
     mainWindow.on('closed', function() {
         mainWindow = null;
     });
 
+    //Remove default toolbar (File, Edit etc.)
     mainWindow.setMenu(null);
-
 }
 
 
@@ -106,6 +107,7 @@ app.on('activate', function (e) {
 *   IPC
 *******************************************************************************/
 
+//Handle IPC from app
 ipcMain.on('asynchronous-message', (event, data) => {
     if ( data.focus !== undefined ){
         mainWindow.focus();

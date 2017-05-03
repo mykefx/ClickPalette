@@ -1,0 +1,30 @@
+// Imports
+@import "colours";
+@import "fonts";
+
+
+
+// Body
+body{
+    font-family: 'main';
+}
+
+
+
+// Main App
+.app{
+
+    .palette{
+        height: 120px;
+
+        .swatches{
+            background-image: url('../resources/checker.jpg');
+            background-repeat: repeat;
+        }
+
+        .toolbar{
+            background-color: $clr-white;
+        }
+    }
+
+}

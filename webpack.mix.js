@@ -15,5 +15,7 @@ mix.webpackConfig({
     target: 'node'
 });
 
+mix.options({ processCssUrls: false });
+
 mix.js('js/app.js', 'app/js')
    .sass('sass/app.scss', 'app/css');
