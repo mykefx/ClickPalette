@@ -19,23 +19,20 @@ const {BrowserWindow}   = electron;
 const {ipcMain}         = electron;
 const Menu              = electron.Menu;
 
-let sysconf = {};
+let sysconf = {bounds: {'x':'', 'y':'', 'width':'400', 'height':'130'}};
 let mainWindow;
+let configTimeout = 0;
 let version = app.getVersion();
 
 //Check sys.json exists, if not cretes the file.
-if (checkFile('sys.json')){
-    sysconf = readFile('sys.json');
-} else {
-    writeFile('sys.json');
-    sysconf = {};
+if (!checkFile('sys.json')){
+    writeFile('sys.json', sysconf);
 }
 
-//Checks if bounds are set, if not creates them.
-if (sysconf.bounds === 'undefined'){
-    console.log('no bounds', sysconf);
-    sysconf.bounds = {'x':'', 'y':'', 'width':'400', 'height':'130'};
-}
+//Lanch the app once sysconf is ready
+readFile('sys.json', sysconf =>{
+    app.on('ready', createWindow);
+});
 
 
 /*******************************************************************************
@@ -52,12 +49,17 @@ function createWindow(){
         height: 130,
         //'titleBarStyle': 'hidden',
         title: 'ClickPalette',
-        backgroundColor: '#fff'
+        backgroundColor: '#ffffff',     //Background color while the app loads
+        titleBarStyle: 'hidden',        //Hide title and default window buttons
+        frame: false,                   //Hide title and default window buttons
+        fullscreenable: false,          //Prevent macOS fullscreen
+        fullscreen: false,              //Prevent macOS fullscreen
+        resizable: false,               //Prevent user window resizing
+        alwaysOnTop: true,              //So window will always be on top of all windows
+
+
     });
 
-    //Further config
-    mainWindow.setResizable(false);
-    mainWindow.setAlwaysOnTop(true);
     mainWindow.loadURL('file://' + __dirname + '/index.html');
 
     mainWindow.webContents.openDevTools();
@@ -84,9 +86,6 @@ function createWindow(){
 *   App Events
 *******************************************************************************/
 
-// Load mainWindow
-app.on('ready', createWindow);
-
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') {
@@ -109,8 +108,15 @@ app.on('activate', function (e) {
 
 //Handle IPC from app
 ipcMain.on('asynchronous-message', (event, data) => {
-    if ( data.focus !== undefined ){
+
+    //Focus
+    if ( data.focus === true ){
         mainWindow.focus();
+    }
+
+    //Close
+    else if ( data.closeApp === true ){
+        mainWindow.close();
     }
 });
 
@@ -120,18 +126,22 @@ ipcMain.on('asynchronous-message', (event, data) => {
 *   Functions
 *******************************************************************************/
 
-function readFile(file){
+function readFile(file, _callback){
     file = app.getPath('userData') + '/' + file;
 
-    let data = fs.readFileSync(file, 'utf8');
-    if (data.length > 0){
-        data = JSON.parse(data);
-    } else {
-        return false;
+    try{
+        let data = fs.readFileSync(file, 'utf8');
+        if (data.length > 0){
+            data = JSON.parse(data);
+            _callback(data);
+        } else{
+            _callback(false);
+        }
+    } catch(e){
+        _callback(false);
     }
-
-    return data;
 }
+
 
 function writeFile(file, obj = ''){
     file = app.getPath('userData') + '/' + file;
@@ -145,6 +155,7 @@ function writeFile(file, obj = ''){
         return true;
     });
 }
+
 
 function checkFile(file){
     file = app.getPath('userData') + '/' + file;

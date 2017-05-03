@@ -4,7 +4,12 @@
 
 
 
-// Body
+// Setup
+html, body{
+    padding: 0;
+    margin: 0;
+}
+
 body{
     font-family: 'main';
 }
@@ -18,12 +23,15 @@ body{
         height: 120px;
 
         .swatches{
+            height: 70px;
             background-image: url('../resources/checker.jpg');
             background-repeat: repeat;
         }
 
         .toolbar{
+            height: 50px;
             background-color: $clr-white;
+            -webkit-app-region: drag;
         }
     }
 

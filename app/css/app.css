@@ -29,6 +29,11 @@
   src: url("../resources/texgyreheros-regular-webfont.woff");
 }
 
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
 body {
   font-family: 'main';
 }
@@ -38,10 +43,13 @@ body {
 }
 
 .app .palette .swatches {
+  height: 70px;
   background-image: url("../resources/checker.jpg");
   background-repeat: repeat;
 }
 
 .app .palette .toolbar {
+  height: 50px;
   background-color: #fff;
+  -webkit-app-region: drag;
 }
